@@ -26,13 +26,10 @@ d <- data.frame(
 for (i in 1:length(files)) {
   local <- substring(files[i], 1, str_length(files[i]) - 15)
   print(files[i])
-  dados_pluviometricos <- read_delim(paste0(data_folder, "/", files[i])
+  dados_pluviometricos <- read_table(paste0(data_folder, "/", files[i])
                                    , skip = 4
-                                   , delim = "\\s+"
-                                   , show_col_types = FALSE
-                                   , col_names = TRUE
-  )
+                          )
   
   dados_pluviometricos <- dados_pluviometricos %>% mutate(Distrito = local)
-  d <- bind_rows(d, dados_pluviometricos)
+ # d <- bind_rows(d, dados_pluviometricos)
 }
