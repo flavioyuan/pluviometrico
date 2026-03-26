@@ -3,25 +3,12 @@
 require(stringr)
 require(dplyr)
 require(readr)
+require(tidyverse)
 
 data_folder <- "/home/flavioyuan/Documentos/R/Projetos/pluviometrico/Dados"
 
 #Read all files from data folder
 files <- list.files(data_folder, pattern = "*.txt")
-
-d <- data.frame(
-  Dia = character(),
-  Hora = character(),
-  HBV = character(),
-  Min05 = character(),
-  Min10 = character(),
-  Min15 = character(),
-  H01 = character(),
-  H04 = character(),
-  H24 = character(),
-  H96 = character(),
-  Distrito = character()
-)
 
 for (i in 1:length(files)) {
   local <- substring(files[i], 1, str_length(files[i]) - 15)
@@ -32,7 +19,7 @@ for (i in 1:length(files)) {
                                    , show_col_types = FALSE
                                    , col_names = TRUE
   )
-  
+  names(dados_pluviometricos) <- str_replace_all(names(dados_pluviometricos), c(" " = "."))
   dados_pluviometricos <- dados_pluviometricos %>% mutate(Distrito = local)
-  d <- bind_rows(d, dados_pluviometricos)
+  print(colnames(dados_pluviometricos))
 }
