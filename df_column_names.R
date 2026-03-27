@@ -9,17 +9,19 @@ data_folder <- "/home/flavioyuan/Documentos/R/Projetos/pluviometrico/Dados"
 
 #Read all files from data folder
 files <- list.files(data_folder, pattern = "*.txt")
+d <- data_frame()
 
 for (i in 1:length(files)) {
   local <- substring(files[i], 1, str_length(files[i]) - 15)
   print(files[i])
-  dados_pluviometricos <- read_delim(paste0(data_folder, "/", files[i])
-                                   , skip = 4
-                                   , delim = "\\s+"
-                                   , show_col_types = FALSE
-                                   , col_names = TRUE
+  dados_pluviometricos <- read_table(paste0(data_folder, "/", files[i])
+                                     , skip = 5
+                                     , col_names = FALSE
+                                     , na = "ND"
+                                     , col_types = "ccddddd"
   )
-  names(dados_pluviometricos) <- str_replace_all(names(dados_pluviometricos), c(" " = "."))
+  #names(dados_pluviometricos) <- str_replace_all(names(dados_pluviometricos), c(" " = "."))
   dados_pluviometricos <- dados_pluviometricos %>% mutate(Distrito = local)
-  print(colnames(dados_pluviometricos))
+  d <- bind_rows(d, dados_pluviometricos)
+  #print(colnames(dados_pluviometricos))
 }
